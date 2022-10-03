@@ -68,7 +68,7 @@ right=1pt, boxsep=0pt, middle=1px}
 \end{codebox}
 
 
-\begin{codebox}{nim}{Types}
+\begin{codebox}{nim}{Tipos}
   assert 42 is int           # Inteiro
   assert true is bool        # Booleano
   assert "42" is string      # String
@@ -255,40 +255,40 @@ echo dt.format("yyyy-MM-dd")
 
 
 \begin{codebox}{nim}{Objetos: Básico}
-  type Cat = object ## Documentation
-    age: int ## Documentation
-  proc meow(this: Cat) = echo "Purr"
-  Cat(age: 5).meow() # Object Instance
+  type Gato = object ## Documentacao
+    idade: int ## Documentacao
+  proc miau(this: Gato) = echo "Miau"
+  Gato(idade: 5).miau() # Instância
 \end{codebox}
 
 
 \begin{codebox}{nim}{Objetos: OOP / Herança}
 type Animal = ref object of RootObj # Base
-  age: int # Atributos
-type Cat = ref object of Animal
-  name: string  # Attributos
-proc increment_age(self: Cat) =
-  self.age.inc()
-var kitten = Cat(name: "Tom", age: 3)
-kitten.increment_age()
+  idade: int # Atributos
+type Gato = ref object of Animal
+  nome: string  # Atributos
+proc incrementa_idade(self: Gato) =
+  self.idade.inc()
+var gatinho = Gato(nome: "Tom", idade: 3)
+gatinho.increment_age()
 \end{codebox}
 
 
 \begin{codebox}{nim}{Criação de nomes de identificadores}
 template createFunction(arg) =
-  proc `arg  World`(): string = "Example"
+  proc `arg  World`(): string = "Exemplo"
 createFunction(hello)
-assert helloWorld() == "Example"
+assert helloWorld() == "Exemplo"
 \end{codebox}
 
 
 \begin{codebox}{nim}{Testes unitários: Setup / TearDown / Suite}
 import unittest
-suite "Test Name":
+suite "Nome do Teste":
   setup:
-    echo "Test Setup"
+    echo "Teste Setup"
   teardown:
-    echo "Test Teardown"
+    echo "Teste Teardown"
   test "example":
     assert 42 == 42, "Error Message"
 \end{codebox}
@@ -328,11 +328,11 @@ if "key=42" =~ peg"{\w+}'='{\w+}":
 
 \begin{codebox}{nim}{Macros: Básico}
 import macros
-macro generate_function(a, b: int): typed =
+macro gera_funcao(a, b: int): typed =
   quote do:
-    proc example(): int = `a` + `b`
-generate_function(6, 4)
-assert example() == 10
+    proc examplo(): int = `a` + `b`
+gera_funcao(6, 4)
+assert examplo() == 10
 \end{codebox}
 
 
@@ -455,8 +455,8 @@ assert Maca is Fruta
 
 \begin{codebox}{nim}{Variáveis de Ambiente (Env Vars)}
 import os
-echo getEnv("HOME") # Leer
-setEnv("Clave", "Valor") # Escribir
+echo getEnv("HOME") # Ler
+setEnv("Clave", "Valor") # Escrever
 \end{codebox}
 
 
@@ -504,7 +504,7 @@ walk(persona)
 
 \begin{codebox}{nim}{Email}
 import smtp
-var mensagem = createMessage("Titulo", "Mensage",  @["tu@mail.io"])
+var mensagem = createMessage("Titulo", "Mensagem",  @["tu@mail.io"])
 let smt = newSmtp(useSsl=true, debug=true)
 smt.connect("smtp.gmail.com", Port(465))
 smt.auth("username", "password")
@@ -514,25 +514,25 @@ smt.sendmail("destino@server.io", @["tu@mail.io"], mensagem)
 
 \begin{codebox}{nim}{MemFiles: Arquivo Mapeado em Memória}
 import memfiles
-let memo = memfiles.open("file.md",fmReadWrite)
-let puntero = memo.mem()
-let content = cast[cstring](puntero)
-echo content
+let memo = memfiles.open("arquivo.md",fmReadWrite)
+let ponteiro = memo.mem()
+let conteudo = cast[cstring](ponteiro)
+echo conteudo
 \end{codebox}
 
 
 \begin{codebox}{nim}{Markdown/RST em HTML}
 import packages/docutils/rstgen, strtabs
-echo rstToHtml("*Hola* **Mundo**", {}, newStringTable(modeStyleInsensitive))
+echo rstToHtml("*Olá* **Mundo**", {}, newStringTable(modeStyleInsensitive))
 \end{codebox}
 
 
 \begin{codebox}{nim}{Diff}
 import experimental/diff
-let txt0 = """Line 1
-line2"""
-let txt1 = """line 1
-Line Changed!"""
+let txt0 = """Linha 1
+linha2"""
+let txt1 = """linha 1
+Linha alterada!"""
 
 echo diffText(txt0, txt1)
 echo diffInt([0, 1, 2, 3], [-1, 1, 2, 3])
@@ -571,7 +571,7 @@ iterator items(a: string): char =
     yield a[i]
     inc i
 
-for item in items("hello world"): echo item
+for item in items("Alô mundo"): echo item
 \end{codebox}
 
 
