@@ -1,0 +1,587 @@
+\documentclass[10pt, a4paper]{article}
+
+% imports
+\usepackage[utf8]{inputenc}
+\usepackage[landscape, margin=2px]{geometry}
+\usepackage[default]{raleway}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{multicol}
+
+% colors
+\definecolor{nimyellow}{HTML}{FFE953}
+\definecolor{nimgray}{HTML}{C5C1B9}
+\definecolor{nimlightgrey}{HTML}{2B2E3B}
+\definecolor{nimdarkgrey}{HTML}{171921}
+
+% init libs settings
+\colorlet{xx}{nimlightgrey}
+\tcbuselibrary{most, listingsutf8, minted}
+\tcbset{tcbox width=auto, left=1pt, top=0pt, bottom=0pt,
+right=1pt, boxsep=0pt, middle=1px}
+
+
+%\usemintedstyle[dark]
+
+\setlength{\columnsep}{0pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0pt}
+\title{Nim Cheatsheet}
+\author{Juan Carlos}
+\setlength{\columnseprule}{0pt}
+\setlength{\premulticols}{0pt}
+\setlength{\postmulticols}{0pt}
+\setlength{\multicolsep}{0pt}
+\setlength{\columnsep}{0pt}
+\pagestyle{empty}
+\pagecolor{nimlightgrey}
+\color{white}
+
+
+% codebox function
+\newtcblisting{codebox}[2]{
+  colback=nimgray,
+  colframe=nimyellow,
+  listing only,
+  minted options={style=emacs, fontsize=\small, breaklines, autogobble, numbersep=0pt},
+  left=0pt,
+  top=0pt,
+  bottom=0pt,
+  enhanced,
+  title=#2,
+  coltitle=black,
+  fonttitle=\bfseries,
+  listing engine=minted,
+  minted language=#1
+}
+
+\begin{document}
+
+\begin{multicols}{4}
+\href{https://nim-lang.org}{
+  \color{nimyellow}\textbf{Nim Cheatsheet}} \href{https://t.me/NimArgentina}{\color{nimgray}\emph{criado por NimArgentina} traduzido port \href{https://t.me/nimbrasil}{Nim Brasil}
+}
+
+
+\begin{codebox}{nim}{Alô Mundo}
+  echo "Alô Mundo!"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Types}
+  assert 42 is int           # Inteiro
+  assert true is bool        # Booleano
+  assert "42" is string      # String
+  assert 42.0 is float       # Float
+  assert @[1, 2, 3] is seq   # Sequencia
+  assert  (1, 2, 3) is tuple # Tupla
+  assert  {1, 2, 3} is set   # Conjunto/Set
+  assert %*{"key":"val"} is JsonNode # JSON
+\end{codebox}
+
+
+\begin{codebox}{nim}{Variáveis / Constantes}
+  var numero = "Mutável"
+  let numero = "Imutável"
+  const numero = "Imutável" # em Tempo de compilação
+\end{codebox}
+
+
+\begin{codebox}{nim}{Matemática}
+  echo 1 + 2, 2 - 1 # Soma e subtração
+  echo 2 * 2, 4 / 2
+  echo 4 mod 2, 8 xor 2 # Módulo & Xor
+  echo 8 shl 2, 8 shr 2 # Shift Left & Right
+\end{codebox}
+
+
+\begin{codebox}{nim}{Iteradores}
+for i in 0..5: echo i  # 0, 1, 2, 3, 4, 5
+for i in 'a'..'e': echo i # a, b, c, d, e
+\end{codebox}
+
+
+\begin{codebox}{nim}{Operador ternário / if ... else}
+if conditional: "valor_0" else: "valor_1"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Case Switch}
+case "gato"
+of "cachorro": echo "Cachorro"
+of "gato": echo "Gato"
+else:     echo "Outro"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Fatias / Slices}
+let variable = [1, 2, 3, 4]
+assert variable[1..2] == @[2, 3]
+assert variable[0..3] == @[1, 2, 3, 4]
+assert variable[1..^1] == @[2, 3, 4]
+assert variable[0..^2] == @[1, 2, 3]
+\end{codebox}
+
+
+\begin{codebox}{nim}{Identação opcional: Expressões em linha}
+let a = try: 1+2 except: 9 finally: echo 0
+\end{codebox}
+
+
+\begin{codebox}{nim}{Imports}
+  import os, json, strutils, othermodule
+  include "folder/file.nim", "owo.nimf"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Operações com String}
+import strutils, editdistance, base64
+echo "con" & "cat"
+echo " ABC ".strip(), "A_B_C".normalize()
+echo "OwO".countLines(),"UwU".splitLines()
+echo "a,b,c".split(","), "a".repeat(9)
+echo parseInt("42"), parseFloat("3.1")
+echo "a".indent(9), " a".unindent(1)
+echo "abc".startswith("a") # endswith("c")
+echo ["a", "b", "c"].join(";")
+assert encode("Nim") == "Tmlt" # base64
+assert editDistance("Cats", "Bats") == 1
+\end{codebox}
+
+
+\begin{codebox}{nim}{Literais string com formatação}
+import strformat
+echo fmt"Foo {1 + 2} Bar {variable} Baz"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Funções}
+proc name(argument: int): int =
+  result = argument + 2
+proc fibo(n: int): int =
+  if n <= 2: 1 else: fibo(n-1) + fibo(n-2)
+\end{codebox}
+
+
+\begin{codebox}{nim}{Funções Anônimas (Lambda)}
+var fn = (proc (a, b: int): int = a + b)
+\end{codebox}
+
+
+\begin{codebox}{nim}{Funções Arrow}
+import sugar
+let fn = (a, b: int) => a + b
+\end{codebox}
+
+
+\begin{codebox}{nim}{UFCS}
+echo("it is")     # echo "it is"
+"the same".echo() # "the same".echo
+\end{codebox}
+
+
+\begin{codebox}{nim}{E/S: Leitura e escrita de arquivos}
+write_file("arquivo.txt", "AlÔ")
+assert read_file("arquivo.txt") == "Alô"
+const txts = static_read("arquivo.txt")
+\end{codebox}
+
+
+\begin{codebox}{nim}{E/S: Leitura de arquivos linha a linha}
+for linha in lines("log.txt"): echo linha
+\end{codebox}
+
+
+\begin{codebox}{nim}{E/S: Lista pastas e arquivos recursivamente}
+import os
+for fl in walkPattern("**/*.txt"): echo fl
+for tipo,fl in walkDirRec("/tmp"): echo fl
+\end{codebox}
+
+
+\begin{codebox}{nim}{Map / Filter / Zip / Deduplicate}
+import sequtils
+proc isPositive(arg: int): bool = arg > 0
+echo map([1, 2, -3, 5, -9], isPositive)
+echo filter([1, 2, -3, 5, -9], isPositive)
+echo zip(@[1, 2, -3], @[5, -9, 42])
+assert deduplicate(@[1,1,2,3]) == @[1,2,3]
+\end{codebox}
+
+
+\begin{codebox}{nim}{Tabelas (Mapeamento com dicionário)}
+import tables
+var dictionary = {"a": 1, "b": 2}.toTable
+assert dictionary["a"] == 1
+dictionary["a"] = 42
+for key, val in dictionary: echo key, val
+\end{codebox}
+
+
+\begin{codebox}{nim}{Sobrecarga de Operadores}
+template `:=`(a, b): untyped = (var a=b; a)
+assert foo := 42 == 42  # Operador Walrus
+\end{codebox}
+
+
+\begin{codebox}{nim}{Terminal colorido}
+import terminal
+styledEcho(bgBlue, fgRed, "Color echo")
+\end{codebox}
+
+
+\begin{codebox}{nim}{HTTP: GET / POST / Headers}
+import httpclient
+const url = "http://example.io" # Example
+var hdr = newHttpHeaders({"DNT": "1"})
+var cliente = newHttpClient(headers=hdr)
+var resp0 = cliente.get(url)
+var resp1 = cliente.post(url, "data")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Processos do SO (Processos Nativos)}
+import osproc
+let (output, errorCode) = execCmdEx("pwd")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Tempo: DateTime / Parse / Format}
+import times # monotimes for Monotonic
+echo now() - 2.days + 9.months + 1.years
+let dt = parse("2000-01-01", "yyyy-MM-dd")
+echo dt.format("yyyy-MM-dd")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Objetos: Básico}
+  type Cat = object ## Documentation
+    age: int ## Documentation
+  proc meow(this: Cat) = echo "Purr"
+  Cat(age: 5).meow() # Object Instance
+\end{codebox}
+
+
+\begin{codebox}{nim}{Objetos: OOP / Herança}
+type Animal = ref object of RootObj # Base
+  age: int # Atributos
+type Cat = ref object of Animal
+  name: string  # Attributos
+proc increment_age(self: Cat) =
+  self.age.inc()
+var kitten = Cat(name: "Tom", age: 3)
+kitten.increment_age()
+\end{codebox}
+
+
+\begin{codebox}{nim}{Criação de nomes de identificadores}
+template createFunction(arg) =
+  proc `arg  World`(): string = "Example"
+createFunction(hello)
+assert helloWorld() == "Example"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Testes unitários: Setup / TearDown / Suite}
+import unittest
+suite "Test Name":
+  setup:
+    echo "Test Setup"
+  teardown:
+    echo "Test Teardown"
+  test "example":
+    assert 42 == 42, "Error Message"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Seq Comprehensions}
+import sugar
+let variable = collect(newSeq):
+  for item in @[-9, 1, 42, 0, -1, 9]: item
+\end{codebox}
+
+
+\begin{codebox}{nim}{Table Comprehensions}
+import sugar
+let variable = collect(initTable(4)):
+  for key,val in @[-9,42,0,9]: {key:val}
+\end{codebox}
+
+
+\begin{codebox}{nim}{RegEx: Expressões Regulares (PCRE)}
+import re
+echo "a=1;b=2".replace(re"(\w+)=(\w+)")
+for s in "abcd".findAll(re"bcd"): echo s
+if "key=42" =~ re"(\w+)\=(\w+)":
+  assert matches[0] == "key"
+  assert matches[1] == "42"
+\end{codebox}
+
+
+\begin{codebox}{nim}{PEG: Parsing Expression Grammar}
+import pegs # PEG é uma alternativa a RegEx
+if "key=42" =~ peg"{\w+}'='{\w+}":
+  assert matches[0] == "key"
+  assert matches[1] == "42"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Macros: Básico}
+import macros
+macro generate_function(a, b: int): typed =
+  quote do:
+    proc example(): int = `a` + `b`
+generate_function(6, 4)
+assert example() == 10
+\end{codebox}
+
+
+\begin{codebox}{nim}{Avançado: FFI C / C++ / JS / ObjC}
+proc printf(s: cstring) {.
+  importc, header: "stdio.h".}
+printf("C/C++ function on Nim!".cstring)
+\end{codebox}
+
+
+\begin{codebox}{nim}{Avançado: Gerenciamento de memória manual}
+let variable = create(int, sizeOf(int))
+variable[] = 42  # Assign value 42
+assert variable[] == 42
+zeroMem(variable, sizeOf(variable.type))
+\end{codebox}
+
+
+\begin{codebox}{nim}{HTTP: Servidor Web Multi-Thread Async}
+import jester
+routes: get "/url": resp "Hello World"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Avançado: L-Value por Referêcia}
+import decls
+var exemplo = @[1, 2, 3]
+var varXref1 {.byaddr.} = exemplo[0]
+var varXref2 {.byaddr.} = exemplo[0]
+assert varXref1.addr == varXref2.addr
+assert varXref1 is int and varXref1 is int
+varXref1 += 42
+\end{codebox}
+
+
+\begin{codebox}{nim}{Blocos With (Gerenciamento de Contexto)}
+import with
+var variable = 44
+with variable:
+  += 4
+  -= 5
+
+assert variable == 43
+\end{codebox}
+
+
+\begin{codebox}{nim}{Mimetypes}
+import mimetypes
+var m = newMimetypes()
+assert m.getMimetype("html") == "text/html"
+assert m.getExt("text/html") == "html"
+assert m.getMimetype("") == "text/plain"
+m.register(ext = "customExtension", mimetype = "text/customMime")
+\end{codebox}
+
+
+\begin{codebox}{nim}{SHA1 / MD5}
+import md5
+assert toMD5("abc") is MD5Digest
+assert getMD5("abc") == "900150983cd24fb0d6963f7d28e17f72"
+
+assert secureHash("John Doe") is SecureHash
+assert secureHashFile("file.txt") is SecureHash
+\end{codebox}
+
+
+\begin{codebox}{nim}{URL / Browser}
+import browsers
+openDefaultBrowser("https://nim-lang.org")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Linux Distros}
+import distros
+if detectOs(Ubuntu): echo "Ubuntu Distro"
+\end{codebox}
+
+
+\begin{codebox}{nim}{CPU Cores}
+import cpuinfo
+echo countProcessors()
+\end{codebox}
+
+
+\begin{codebox}{nim}{Configurações do Compilador}
+import compilesettings
+let x = SingleValueSetting.nimcacheDir
+let nimcache = querySetting(x)
+let z = MultipleValueSetting.nimblePaths
+let nimblePaths = compileSettingSeq(z)
+\end{codebox}
+
+
+\begin{codebox}{nim}{JavaScript Console}
+import jsconsole
+console.log("echo on web browser console!")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Bloco: Novo Contexto Explícito Nomeado}
+block nome_do_bloco: # Nome Opcional
+  let scopedVariable = "A new Scope"
+  proc funcion() = echo 42
+  # break nome_do_bloco # Saída do bloco
+
+# echo scopedVariable
+# Error: undeclared: "scopedVariable"
+# funcion()
+# Error: undeclared: "funcion"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Enums}
+import strutils
+type Fruta = enum Maca, Banana, Kiwi
+let fruto = parseEnum[Fruta]("banana")
+assert Maca is Fruta
+\end{codebox}
+
+
+\begin{codebox}{nim}{Variáveis de Ambiente (Env Vars)}
+import os
+echo getEnv("HOME") # Leer
+setEnv("Clave", "Valor") # Escribir
+\end{codebox}
+
+
+\begin{codebox}{nim}{Executar ao Sair}
+proc funcionASair() {.noconv.} =
+  echo "Esta se executa ao terminar"
+
+addQuitProc(funcionAlSalir)
+\end{codebox}
+
+
+\begin{codebox}{nim}{Executar com CTRL+C}
+proc funcionACtrlC() {.noconv.} =
+  echo "Esta se executa com CTRL+C"
+
+setControlCHook(funcionACtrlC)
+\end{codebox}
+
+
+\begin{codebox}{nim}{Exemplos Executáveis Auto-Documentação}
+runnableExamples: # nim doc file.nim
+  echo "Self-Documentation"
+\end{codebox}
+
+
+\begin{codebox}{nim}{Logging}
+import logging
+addHandler(newRollingFileLogger("app.log"))
+info("Log em Arquivo com formatação e rotação automática")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Conceitos}
+type CanMove = concept x
+  move(x)
+type Person = object
+
+proc move(this: Person) = echo "move!"
+proc walk(this: CanMove) = move(this)
+
+let persona = Person()
+walk(persona)
+\end{codebox}
+
+
+\begin{codebox}{nim}{Email}
+import smtp
+var mensagem = createMessage("Titulo", "Mensage",  @["tu@mail.io"])
+let smt = newSmtp(useSsl=true, debug=true)
+smt.connect("smtp.gmail.com", Port(465))
+smt.auth("username", "password")
+smt.sendmail("destino@server.io", @["tu@mail.io"], mensagem)
+\end{codebox}
+
+
+\begin{codebox}{nim}{MemFiles: Arquivo Mapeado em Memória}
+import memfiles
+let memo = memfiles.open("file.md",fmReadWrite)
+let puntero = memo.mem()
+let content = cast[cstring](puntero)
+echo content
+\end{codebox}
+
+
+\begin{codebox}{nim}{Markdown/RST em HTML}
+import packages/docutils/rstgen, strtabs
+echo rstToHtml("*Hola* **Mundo**", {}, newStringTable(modeStyleInsensitive))
+\end{codebox}
+
+
+\begin{codebox}{nim}{Diff}
+import experimental/diff
+let txt0 = """Line 1
+line2"""
+let txt1 = """line 1
+Line Changed!"""
+
+echo diffText(txt0, txt1)
+echo diffInt([0, 1, 2, 3], [-1, 1, 2, 3])
+\end{codebox}
+
+
+\begin{codebox}{nim}{Gerador de HTML}
+import htmlgen # SVG e MathML suportados
+echo h1(a(href="nim-lang.org", "Nim"))
+assert form(action="test")
+\end{codebox}
+
+
+\begin{codebox}{nim}{Genéricos}
+func min[T](x, y: T): auto =
+  if x < y: x else: y
+
+echo min(2, 3) # int
+echo min("foo", "bar") # string
+\end{codebox}
+
+
+\begin{codebox}{nim}{Expressão de Bloco}
+let variable = block:
+  var fib = @[0, 1]
+  for i in 0..10:
+    fib.add fib[^1] + fib[^2]
+  fib
+\end{codebox}
+
+
+\begin{codebox}{nim}{Iteradores}
+iterator items(a: string): char =
+  var i = 0
+  while i < len(a):
+    yield a[i]
+    inc i
+
+for item in items("hello world"): echo item
+\end{codebox}
+
+
+\begin{codebox}{nim}{Exceções Personalizadas}
+raise newException(IOError, "Mensagem")
+raise newException(Exception, "Mensagem")
+\end{codebox}
+
+
+
+
+\end{multicols}
+\end{document}
